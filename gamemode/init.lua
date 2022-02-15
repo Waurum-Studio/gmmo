@@ -1,52 +1,41 @@
-resource.AddFile( "resource/fonts/montserrat-bold.ttf" )
-resource.AddFile( "resource/fonts/montserrat-medium.ttf" )
+resource.AddFile("resource/fonts/montserrat-bold.ttf")
+resource.AddFile("resource/fonts/montserrat-medium.ttf")
 
--- SHARED LOAD --
-AddCSLuaFile( "shared.lua" )
-include( "shared.lua" )
+// SHARED Load
+print("[Botched - Load] Loaded SHARED files")
+AddCSLuaFile("shared.lua")
+include("shared.lua")
 
--- CLIENT LOAD --
-AddCSLuaFile( "cl_init.lua" )
-AddCSLuaFile( "client/cl_bshadows.lua" )
-AddCSLuaFile( "client/cl_drawing.lua" )
-AddCSLuaFile( "client/cl_fonts.lua" )
-AddCSLuaFile( "client/cl_player.lua" )
-AddCSLuaFile( "client/cl_hud.lua" )
-AddCSLuaFile( "client/cl_equipment.lua" )
-AddCSLuaFile( "client/cl_derma_popups.lua" )
-AddCSLuaFile( "client/cl_admin.lua" )
-AddCSLuaFile( "client/cl_monsters.lua" )
-AddCSLuaFile( "client/cl_notifications.lua" )
-AddCSLuaFile( "client/cl_resources.lua" )
-AddCSLuaFile( "client/cl_gacha.lua" )
-AddCSLuaFile( "client/cl_crafting.lua" )
-AddCSLuaFile( "client/cl_quests.lua" )
-AddCSLuaFile( "client/cl_panelmeta.lua" )
-AddCSLuaFile( "client/cl_rewards.lua" )
-AddCSLuaFile( "client/cl_map.lua" )
-AddCSLuaFile( "client/cl_characters.lua" )
-AddCSLuaFile( "client/cl_party_system.lua" )
-
--- SERVER LOAD --
-include( "server/sv_sqllite.lua" )
-include( "server/sv_player.lua" )
-include( "server/sv_equipment.lua" )
-include( "server/sv_models.lua" )
-include( "server/sv_admin.lua" )
-include( "server/sv_monsters.lua" )
-include( "server/sv_resources.lua" )
-include( "server/sv_gacha.lua" )
-include( "server/sv_crafting.lua" )
-include( "server/sv_quests.lua" )
-include( "server/sv_rewards.lua" )
-include( "server/sv_map.lua" )
-include( "server/sv_characters.lua" )
-include( "server/sv_party_system.lua" )
-
--- VGUI LOAD --
-for k, v in pairs( file.Find( GM.FolderName .. "/gamemode/vgui/*.lua", "LUA" ) ) do
-	AddCSLuaFile( "vgui/" .. v )
+// CLIENT Load
+print("\n[Botched - Load] Loading CLIENT files")
+for k,v in pairs(file.Find(GM.FolderName .. "/gamemode/client/*.lua", "LUA")) do
+	AddCSLuaFile("client/" .. v)
 end
+MsgC(Color( 0, 255, 0 ), "[Botched] Loaded CLIENT files successfully!\n")
+
+// SERVER Load
+print("\n[Botched - Load] Loading SERVER files")
+for k,v in pairs(file.Find(GM.FolderName .. "/gamemode/server/*.lua", "LUA")) do
+    if (v == "sv_mysql.lua" or v == "sv_sqllite.lua") then continue end
+	include("server/" .. v)
+end
+MsgC(Color( 0, 255, 0 ), "[Botched] Loaded SERVER files successfully!\n")
+
+
+// SQL Load
+print("\n[Botched - Load] Loading SQL module")
+if (BOTCHED.CONFIG.UseMySQL) then
+    include("server/sv_mysql.lua")
+else
+    include("server/sv_sqllite.lua")
+end
+
+// VGUI Load
+print("\n[Botched - Load] Loading VGUI elements")
+for k, v in pairs(file.Find(GM.FolderName .. "/gamemode/vgui/*.lua", "LUA")) do
+	AddCSLuaFile("vgui/" .. v)
+end
+MsgC(Color( 0, 255, 0 ), "[Botched] Loaded VGUI elements successfully!\n")
 
 DEFINE_BASECLASS( "gamemode_base" )
 
