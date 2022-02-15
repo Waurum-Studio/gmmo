@@ -92,25 +92,25 @@ adminCommands["giveplayermodel"] = {
     Register new console commands let's go
 */
 concommand.Add("gmmo", function(ply, cmd, args)
-    if (IsValid(ply) and not ply:HasAdminPrivilege()) then 
+    if (IsValid(ply) and !ply:HasAdminPrivilege()) then 
         ply:SendNotification(1, 5, "You don't have the permission to use this!")
         return 
     end
 
     local commandTable = adminCommands[args[1] or ""]
-    if (not commandTable) then return end
+    if (!commandTable) then return end
 
     local commandArguments = {}
     for k,v in pairs(commandTable.Arguments or {}) do
         local argument = args[k+1]
-        if (not argument) then return end
+        if (!argument) then return end
 
         if (v[1] == "Player") then
             argument = player.GetBySteamID64(argument)
-            if (not IsValid(argument)) then return end
+            if (!IsValid(argument)) then return end
         elseif (v[1] == "Integer") then
-            argument = tonumber( argument )
-            if( not isnumber( argument ) ) then return end
+            argument = tonumber(argument)
+            if (!isnumber(argument)) then return end
         end
 
         commandArguments[k] = argument
@@ -123,24 +123,27 @@ end )
     Chat commands handler
 */
 hook.Add("PlayerSay", "Botched.HandleChatCommands", function(ply, msg)
-    if (!IsValid(ply) or !ply:HasAdminPrivilege()) then return end
+    if (!IsValid(ply) or !ply:HasAdminPrivilege()) then 
+        ply:SendNotification(1, 5, "You don't have the permission to use this!")
+        return 
+    end
 
     if (string.StartWith(msg, BOTCHED.CONFIG.CommandsPrefix)) then
         local command = string.Split(msg, " ")
-        local commandTable = adminCommands[string.Trim(command[0], "!")  or ""]
+        local commandTable = adminCommands[string.Trim(command[1], "!")  or ""]
         if (not commandTable) then return end
 
         local commandArguments = {}
         for k,v in pairs(commandTable.Arguments or {}) do
-            local argument = args[k+1]
+            local argument = command[k+1]
             if (not argument) then return end
 
             if (v[1] == "Player") then
                 argument = player.GetBySteamID64(argument)
-                if (not IsValid(argument)) then return end
+                if (!IsValid(argument)) then return end
             elseif (v[1] == "Integer") then
-                argument = tonumber( argument )
-                if( not isnumber( argument ) ) then return end
+                argument = tonumber(argument)
+                if (!isnumber(argument)) then return end
             end
 
             commandArguments[k] = argument
