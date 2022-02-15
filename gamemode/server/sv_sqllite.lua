@@ -30,8 +30,6 @@ if( not sql.TableExists( "botched_players" ) ) then
 	); ]] )
 end
 
-print( "[Botched SQLLite] botched_players table validated!" )
-
 -- PLAYERMODELS --
 if( not sql.TableExists( "botched_owned_characters" ) ) then
 	BOTCHED.FUNC.SQLQuery( [[ CREATE TABLE botched_owned_characters ( 
@@ -39,8 +37,6 @@ if( not sql.TableExists( "botched_owned_characters" ) ) then
 		characterKey varchar(25) NOT NULL
 	); ]] )
 end
-
-print( "[Botched SQLLite] botched_owned_characters table validated!" )
 
 -- EQUIPMENT --
 if( not sql.TableExists( "botched_owned_equipment" ) ) then
@@ -51,8 +47,6 @@ if( not sql.TableExists( "botched_owned_equipment" ) ) then
 		rank int
 	); ]] )
 end
-
-print( "[Botched SQLLite] botched_owned_equipment table validated!" )
 
 -- CHOSEN EQUIPMENT --
 if( not sql.TableExists( "botched_chosen_equipment" ) ) then
@@ -68,8 +62,6 @@ if( not sql.TableExists( "botched_chosen_equipment" ) ) then
 	); ]] )
 end
 
-print( "[Botched SQLLite] botched_chosen_equipment table validated!" )
-
 -- INVENTORY --
 if( not sql.TableExists( "botched_inventory" ) ) then
 	BOTCHED.FUNC.SQLQuery( [[ CREATE TABLE botched_inventory (
@@ -78,8 +70,6 @@ if( not sql.TableExists( "botched_inventory" ) ) then
 		amount int
 	); ]] )
 end
-
-print( "[Botched SQLLite] botched_inventory table validated!" )
 
 -- QUESTS --
 if( not sql.TableExists( "botched_completed_quests" ) ) then
@@ -91,8 +81,6 @@ if( not sql.TableExists( "botched_completed_quests" ) ) then
 	); ]] )
 end
 
-print( "[Botched SQLLite] botched_completed_quests table validated!" )
-
 -- TIME REWARDS --
 if( not sql.TableExists( "botched_claimed_timerewards" ) ) then
 	BOTCHED.FUNC.SQLQuery( [[ CREATE TABLE botched_claimed_timerewards (
@@ -101,8 +89,6 @@ if( not sql.TableExists( "botched_claimed_timerewards" ) ) then
 		claimTime int NOT NULL
 	); ]] )
 end
-
-print( "[Botched SQLLite] botched_claimed_timerewards table validated!" )
 
 -- LOGIN REWARDS --
 if( not sql.TableExists( "botched_claimed_loginrewards" ) ) then
@@ -113,4 +99,4 @@ if( not sql.TableExists( "botched_claimed_loginrewards" ) ) then
 	); ]] )
 end
 
-print( "[Botched SQLLite] botched_claimed_loginrewards table validated!" )
+MsgC(Color( 0, 255, 0 ), "[Botched SQL] Loaded SQLLite module successfully!\n")
