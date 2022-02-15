@@ -7,41 +7,41 @@ include( "shared.lua" )
 
 -- CLIENT LOAD --
 AddCSLuaFile( "cl_init.lua" )
-AddCSLuaFile( "cl_bshadows.lua" )
-AddCSLuaFile( "cl_drawing.lua" )
-AddCSLuaFile( "cl_fonts.lua" )
-AddCSLuaFile( "cl_player.lua" )
-AddCSLuaFile( "cl_hud.lua" )
-AddCSLuaFile( "cl_equipment.lua" )
-AddCSLuaFile( "cl_derma_popups.lua" )
-AddCSLuaFile( "cl_admin.lua" )
-AddCSLuaFile( "cl_monsters.lua" )
-AddCSLuaFile( "cl_notifications.lua" )
-AddCSLuaFile( "cl_resources.lua" )
-AddCSLuaFile( "cl_gacha.lua" )
-AddCSLuaFile( "cl_crafting.lua" )
-AddCSLuaFile( "cl_quests.lua" )
-AddCSLuaFile( "cl_panelmeta.lua" )
-AddCSLuaFile( "cl_rewards.lua" )
-AddCSLuaFile( "cl_map.lua" )
-AddCSLuaFile( "cl_characters.lua" )
-AddCSLuaFile( "cl_party_system.lua" )
+AddCSLuaFile( "client/cl_bshadows.lua" )
+AddCSLuaFile( "client/cl_drawing.lua" )
+AddCSLuaFile( "client/cl_fonts.lua" )
+AddCSLuaFile( "client/cl_player.lua" )
+AddCSLuaFile( "client/cl_hud.lua" )
+AddCSLuaFile( "client/cl_equipment.lua" )
+AddCSLuaFile( "client/cl_derma_popups.lua" )
+AddCSLuaFile( "client/cl_admin.lua" )
+AddCSLuaFile( "client/cl_monsters.lua" )
+AddCSLuaFile( "client/cl_notifications.lua" )
+AddCSLuaFile( "client/cl_resources.lua" )
+AddCSLuaFile( "client/cl_gacha.lua" )
+AddCSLuaFile( "client/cl_crafting.lua" )
+AddCSLuaFile( "client/cl_quests.lua" )
+AddCSLuaFile( "client/cl_panelmeta.lua" )
+AddCSLuaFile( "client/cl_rewards.lua" )
+AddCSLuaFile( "client/cl_map.lua" )
+AddCSLuaFile( "client/cl_characters.lua" )
+AddCSLuaFile( "client/cl_party_system.lua" )
 
 -- SERVER LOAD --
-include( "sv_sqllite.lua" )
-include( "sv_player.lua" )
-include( "sv_equipment.lua" )
-include( "sv_models.lua" )
-include( "sv_admin.lua" )
-include( "sv_monsters.lua" )
-include( "sv_resources.lua" )
-include( "sv_gacha.lua" )
-include( "sv_crafting.lua" )
-include( "sv_quests.lua" )
-include( "sv_rewards.lua" )
-include( "sv_map.lua" )
-include( "sv_characters.lua" )
-include( "sv_party_system.lua" )
+include( "server/sv_sqllite.lua" )
+include( "server/sv_player.lua" )
+include( "server/sv_equipment.lua" )
+include( "server/sv_models.lua" )
+include( "server/sv_admin.lua" )
+include( "server/sv_monsters.lua" )
+include( "server/sv_resources.lua" )
+include( "server/sv_gacha.lua" )
+include( "server/sv_crafting.lua" )
+include( "server/sv_quests.lua" )
+include( "server/sv_rewards.lua" )
+include( "server/sv_map.lua" )
+include( "server/sv_characters.lua" )
+include( "server/sv_party_system.lua" )
 
 -- VGUI LOAD --
 for k, v in pairs( file.Find( GM.FolderName .. "/gamemode/vgui/*.lua", "LUA" ) ) do
@@ -52,10 +52,6 @@ DEFINE_BASECLASS( "gamemode_base" )
 
 util.AddNetworkString( "Botched.SendFirstSpawn" )
 function GM:PlayerInitialSpawn( ply )
-    if( GAMEMODE.Developers[ply:SteamID64()] ) then
-        ply:SetUserGroup( "superadmin" )
-    end
-
     BOTCHED.FUNC.SQLQuery( "SELECT * FROM botched_players WHERE steamID64 = '" .. ply:SteamID64() .. "';", function( data )
         if( data ) then
             local userID = tonumber( data.userID or "" ) or 1 
@@ -282,7 +278,7 @@ function GM:PlayerLoadout( ply )
         end
     end
 
-    if( ply:IsSuperAdmin() ) then
+    if( ply:HasAdminPrivilege() ) then
         ply:Give( "weapon_admin_toolgun" )
     end
 
@@ -310,7 +306,7 @@ function GM:ShowTeam( ply )
 end
 
 function GM:ShowHelp( ply )
-    if( ply:IsSuperAdmin() ) then
+    if( ply:HasAdminPrivilege() ) then
         if( ply:GetActiveWeapon():GetClass() != "weapon_admin_toolgun" ) then
             ply:SelectWeapon( "weapon_admin_toolgun" )
         else
@@ -320,7 +316,7 @@ function GM:ShowHelp( ply )
 end
 
 local menuKeys = {
-    [KEY_Q] = "",
+    [KEY_B] = "",
     [KEY_I] = "inventory",
     [KEY_C] = "character"
 }
