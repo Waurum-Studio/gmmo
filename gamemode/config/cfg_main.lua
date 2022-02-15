@@ -1,5 +1,11 @@
 BOTCHED.CONFIG = {}
 
+/*
+                SQL Config
+    Should we use MySQL or SQLite (sv.db)
+*/
+BOTCHED.CONFIG.UseMySQL = false
+
 -- NOTICES CONFIG --
 BOTCHED.CONFIG.NoticeTypes = {
     [1] = { 
