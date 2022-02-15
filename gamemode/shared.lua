@@ -142,4 +142,4 @@ function BOTCHED.FUNC.UTCTime()
 	return os.time( os.date( "!*t" ) )
 end
 
-// test
+MsgC(Color( 0, 255, 0 ), "[Botched] Loaded SHARED file successfully!\n")
